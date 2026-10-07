@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
@@ -22,14 +23,15 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
 
-      - name: Build APK
-        run: gradle assembleDebug
+      - name: Make Gradle executable
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew :app:assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: DailyRoutine-debug-apk
+          name: DailyRoutine-APK
           path: app/build/outputs/apk/debug/*.apk
